@@ -38,9 +38,9 @@ namespace Knight.MysqlTest2.DB
                 this.connection = new MySqlConnection(connStr);
                 connection.Open();
             }
-            catch (MySqlException e)
+            catch (MySqlException)
             {
-                throw new DatabaseConnectionFailedException($"Error while connecting to mysql server: {e.Message}");
+                throw new DatabaseConnectionFailedException($"Couldn't connect to mysql server");
             }
         }
         
@@ -64,9 +64,9 @@ namespace Knight.MysqlTest2.DB
                 connection.Open();
                 this.ConnectToDataBase(database);
             }
-            catch (MySqlException e)
+            catch (MySqlException)
             {
-                throw new DatabaseConnectionFailedException($"Error while connecting to mysql server: {e.Message}");
+                throw new DatabaseConnectionFailedException($"Couldn't connect to mysql server");
             }
         }
 
@@ -94,9 +94,9 @@ namespace Knight.MysqlTest2.DB
                     this.CreateDataBase(database);
                 }
             }
-            catch (MySqlException e)
+            catch (MySqlException)
             {
-                throw new DatabaseConnectionFailedException($"Error while connecting to mysql server: {e.Message}");
+                throw new DatabaseConnectionFailedException($"Couldn't connect to mysql server");
             }
         }
 
@@ -123,9 +123,9 @@ namespace Knight.MysqlTest2.DB
                     cmd = new MySqlCommand($"CREATE DATABASE {database}", this.connection);
                     cmd.ExecuteNonQuery();
                 }
-                catch (MySqlException e)
+                catch (MySqlException)
                 {
-                    throw new QueryFailedException($"Error while creating database: {e.Message}");
+                    throw new QueryFailedException("Couldn't create database");
                 }
                 finally
                 {
@@ -148,9 +148,9 @@ namespace Knight.MysqlTest2.DB
                     MySqlCommand cmd = new MySqlCommand($"DROP DATABASE {database}", this.connection);
                     cmd.ExecuteNonQuery();
                 }
-                catch (MySqlException e)
+                catch (MySqlException)
                 {
-                    throw new QueryFailedException($"Error while deleting database: {e.Message}");
+                    throw new QueryFailedException("Couldn't delete database");
                 }
             }
         }
@@ -210,9 +210,9 @@ namespace Knight.MysqlTest2.DB
                     cmd = new MySqlCommand(query, connection);
                     cmd.ExecuteNonQuery();
                 }
-                catch (MySqlException e)
+                catch (MySqlException)
                 {
-                    throw new QueryFailedException($"Error while creating user table: {e.Message}");
+                    throw new QueryFailedException("Couldn't create user tables");
                 }
             }
         }
@@ -258,13 +258,13 @@ namespace Knight.MysqlTest2.DB
                     }
 
                 }
-                catch (InvalidOperationException e)
+                catch (InvalidOperationException)
                 {
-                    throw new QueryFailedException($"Error while registering new user: {e.Message}");
+                    throw new QueryFailedException("Couldn't register new user");
                 }
-                catch (MySqlException e)
+                catch (MySqlException)
                 {
-                    throw new UserAlreadyExistsException($"Error while registering new user: {e.Message}");
+                    throw new UserAlreadyExistsException("User already exists");
                 }
             }
             return -1;
@@ -325,9 +325,9 @@ namespace Knight.MysqlTest2.DB
                     }
                     
                 }
-                catch (MySqlException e)
+                catch (MySqlException)
                 {
-                    throw new QueryFailedException($"Error while logging in: {e.Message}");
+                    throw new QueryFailedException("Couldn't log in");
                 }
             }
             return -1;
@@ -361,9 +361,9 @@ namespace Knight.MysqlTest2.DB
 
                     dataReader.Close();
                 }
-                catch (MySqlException e)
+                catch (MySqlException)
                 {
-                    throw new QueryFailedException($"Error while showing users: {e.Message}");
+                    throw new QueryFailedException("Couldn't show all users");
                 }
             }
         }
