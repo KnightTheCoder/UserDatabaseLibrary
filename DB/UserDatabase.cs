@@ -384,6 +384,14 @@ namespace Knight.MysqlTest2.DB
             return user_id;
         }
 
+        /// <summary>
+        /// Fills out user information with the specified values
+        /// </summary>
+        /// <param name="user_id">Id of the user</param>
+        /// <param name="firstname">Firstname of the user</param>
+        /// <param name="lastname">Lastname of the user</param>
+        /// <param name="gender">Gender of the user</param>
+        /// <exception cref="QueryFailedException">Thrown when the user information couldn't be filled</exception>
         public void FillUserInformation(int user_id, string? firstname = null, string? lastname = null, string? gender = null)
         {
             if(this.IsOpen)
@@ -434,6 +442,12 @@ namespace Knight.MysqlTest2.DB
             }
         }
 
+        /// <summary>
+        /// Checks wether the user information is already filled
+        /// </summary>
+        /// <param name="user_id">Id of the user</param>
+        /// <returns>Wether the user information is filled</returns>
+        /// <exception cref="QueryFailedException">Thrown when user information couldn't be found</exception>
         public bool IsUserInformationAlreadyFilled(int user_id)
         {
             bool userInfoFilled = false;
@@ -462,6 +476,11 @@ namespace Knight.MysqlTest2.DB
             return userInfoFilled;
         }
 
+        /// <summary>
+        /// Gets user information in a <see cref="UserInformation"></see> object
+        /// </summary>
+        /// <param name="user_id"></param>
+        /// <returns>The user's information in a <see cref="UserInformation"></see> object</returns>
         public UserInformation GetUserInformation(int user_id)
         {
             UserInformation userInfo = new UserInformation();
