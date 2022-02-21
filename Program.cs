@@ -63,9 +63,10 @@ namespace Knight.MysqlTest2
                 db.CreateTables();
 
                 user1 = new User("testaccount", "test@testmail.com", "123test", db); // Registers new user
-                user2 = new User("testaccount", "test@testmail.com", "123test", db); // Loggs in because user already exists
-                user4 = new User("testuser", "testuser@testmail.com", "123", db);
-                user3 = new User("testaccount", "test@testmail.com", "123", db); // Error, incorrect login info
+                user2 = new User("testaccount", "test@testmail.com", "123test", db); // Creates an instance with the already existing id
+                user3 = new User("testuser", "testuser@testmail.com", "123", db);
+                user4 = new User("testaccount", "test@testmail.com", "123", db); // Error, incorrect login info
+                user2.Login("testaccount", "123test"); // Logs in the user
                 
             }
             catch (UserDatabaseException e)
