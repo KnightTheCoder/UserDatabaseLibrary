@@ -233,32 +233,33 @@ namespace Knight.MysqlTest2.DB
             {
                 try
                 {
-                    if(!this.DoesUserExist(username, email, password))
+                    if(this.DoesUserExist(username, email, password))
                     {
-                        string query = "INSERT INTO users (username, password, email) VALUES ( @username, @password, @email)";
-                        MySqlCommand cmd = new MySqlCommand(query, this.connection);
-                        cmd.Parameters.AddWithValue("@username", username);
-                        cmd.Parameters.AddWithValue("@password", password);
-                        cmd.Parameters.AddWithValue("@email", email);
+                        throw new UserAlreadyExistsException("User already exists");
+                    }
+                    string query = "INSERT INTO users (username, password, email) VALUES ( @username, @password, @email)";
+                    MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@email", email);
 
-                        cmd.Prepare();
+                    cmd.Prepare();
 
-                        cmd.ExecuteNonQuery();
-                        
-                        query = "SELECT id FROM users WHERE username=@username AND email=@email AND password=@password";
-                        cmd = new MySqlCommand(query, this.connection);
-                        cmd.Parameters.AddWithValue("@username", username);
-                        cmd.Parameters.AddWithValue("@password", password);
-                        cmd.Parameters.AddWithValue("@email", email);
+                    cmd.ExecuteNonQuery();
+                    
+                    query = "SELECT id FROM users WHERE username=@username AND email=@email AND password=@password";
+                    cmd = new MySqlCommand(query, this.connection);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Parameters.AddWithValue("@email", email);
 
-                        cmd.Prepare();
+                    cmd.Prepare();
 
-                        string? result = cmd.ExecuteScalar().ToString();
-                        if(result != null)
-                        {
-                            int user_id = int.Parse(result);
-                            return user_id;
-                        }
+                    string? result = cmd.ExecuteScalar().ToString();
+                    if(result != null)
+                    {
+                        int user_id = int.Parse(result);
+                        return user_id;
                     }
 
                 }
@@ -280,7 +281,7 @@ namespace Knight.MysqlTest2.DB
         /// <param name="username">Username or email of the user</param>
         /// <param name="password">Password of the user</param>
         /// <returns>The user's id or -1 if failed</returns>
-        /// <exception cref="QueryFailedException">Thrown when login has fail</exception>
+        /// <exception cref="QueryFailedException">Thrown when login has failed</exception>
         public int LoginUser(string username, string password)
         {
             if(this.IsOpen)
@@ -350,9 +351,9 @@ namespace Knight.MysqlTest2.DB
                     MySqlCommand cmd = new MySqlCommand(query, this.connection);
                     MySqlDataReader dataReader = cmd.ExecuteReader();
 
+                    Console.WriteLine("Users:");
                     while(dataReader.Read())
                     {
-                        Console.WriteLine("Users:");
                         if(dataReader.HasRows)
                         {
                             for(int i = 0; i < dataReader.FieldCount; i++)
@@ -372,6 +373,14 @@ namespace Knight.MysqlTest2.DB
             }
         }
 
+        /// <summary>
+        /// Checks wether the a user with the specified credentials exists
+        /// </summary>
+        /// <param name="username">Username of the user</param>
+        /// <param name="email">Email of the user</param>
+        /// <param name="password">Password of the user</param>
+        /// <returns>Wether the user exists</returns>
+        /// <exception cref="QueryFailedException">Thrown when the user couldn't be found</exception>
         public bool DoesUserExist(string username, string email, string password)
         {
             if(this.IsOpen)
@@ -394,14 +403,52 @@ namespace Knight.MysqlTest2.DB
                         }
                     }
                 }
-                catch (MySqlException e)
+                catch (MySqlException)
                 {
-                    Logging.Log.LogError(e);
                     throw new QueryFailedException("Couldn't find user");
                 }
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Gets the id of a user
+        /// </summary>
+        /// <param name="username">Username of the user</param>
+        /// <param name="email">Email of the user</param>
+        /// <param name="password">Password of the user</param>
+        /// <returns>The id of a user, -1 if it doesn't exist</returns>
+        /// <exception cref="QueryFailedException">Thrown when the user couldn't be found</exception>
+        public int GetUserId(string username, string email, string password)
+        {
+            int user_id = -1;
+            if(this.IsOpen)
+            {
+                try
+                {
+                    if(this.DoesUserExist(username, email, password))
+                    {
+                        string query = "SELECT id FROM users WHERE username=@username AND email=@email AND password=@password";
+                        MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                        cmd.Parameters.AddWithValue("@username", username);
+                        cmd.Parameters.AddWithValue("@email", email);
+                        cmd.Parameters.AddWithValue("@password", password);
+                        cmd.Prepare();
+                        string? result = cmd.ExecuteScalar().ToString();
+                        if(result != null)
+                        {
+                            user_id = int.Parse(result);
+                        }
+                    }
+                }
+                catch (MySqlException)
+                {
+                    throw new QueryFailedException("Couldn't find user");
+                }
+            }
+
+            return user_id;
         }
     }
 }
