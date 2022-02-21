@@ -67,6 +67,12 @@ namespace Knight.MysqlTest2
                 user3 = new User("testuser", "testuser@testmail.com", "123", db);
                 user4 = new User("testaccount", "test@testmail.com", "123", db); // Error, incorrect login info
                 user2.Login("testaccount", "123test"); // Logs in the user
+                if(user2.LoggedIN)
+                {
+                    Log.LogSuccess("Login successful");
+                }
+                db.FillUserInformation(user2.Id, "John", "Smith");
+                db.FillUserInformation(user2.Id, gender: "male");
                 
             }
             catch (UserDatabaseException e)
