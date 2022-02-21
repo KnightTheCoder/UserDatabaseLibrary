@@ -20,7 +20,7 @@ namespace Knight.MysqlTest2.DB
         public bool IsOpen {get => connection.State.ToString() == "Open";}
 
         /// <summary>
-        /// Creates a mysql connection without any database
+        /// Intializes a mysql connection without any database
         /// </summary>
         /// <exception cref="DatabaseConnectionFailedException">Thrown when a connection is not made</exception>
         public UserDatabase()
@@ -45,7 +45,7 @@ namespace Knight.MysqlTest2.DB
         }
         
         /// <summary>
-        /// Creates a mysql connection and connects to a database
+        /// Intializes a mysql connection and connects to a database
         /// </summary>
         /// <param name="database">Database to connect to</param>
         /// <exception cref="DatabaseConnectionFailedException">Thrown when a connection is not made</exception>
@@ -71,7 +71,7 @@ namespace Knight.MysqlTest2.DB
         }
 
         /// <summary>
-        /// Creates a mysql connection and connects to a database or creates one if it doesn't exist
+        /// Intializes a mysql connection and connects to a database or creates one if it doesn't exist
         /// </summary>
         /// <param name="database">Database to connect to</param>
         /// <exception cref="DatabaseConnectionFailedException">Thrown when a connection is not made</exception>
