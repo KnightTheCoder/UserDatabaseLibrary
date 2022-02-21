@@ -206,6 +206,7 @@ namespace Knight.MysqlTest2.DB
                         "gender VARCHAR(30)," +
                         "PRIMARY KEY(user_id)," +
                         "FOREIGN KEY(user_id) REFERENCES users(id)" +
+                        "ON DELETE CASCADE" +
                         ");";
                     cmd = new MySqlCommand(query, connection);
                     cmd.ExecuteNonQuery();
@@ -232,29 +233,32 @@ namespace Knight.MysqlTest2.DB
             {
                 try
                 {
-                    string query = "INSERT INTO users (username, password, email) VALUES ( @username, @password, @email)";
-                    MySqlCommand cmd = new MySqlCommand(query, this.connection);
-                    cmd.Parameters.AddWithValue("@username", username);
-                    cmd.Parameters.AddWithValue("@password", password);
-                    cmd.Parameters.AddWithValue("@email", email);
-
-                    cmd.Prepare();
-
-                    cmd.ExecuteNonQuery();
-                    
-                    query = "SELECT id FROM users WHERE username=@username AND email=@email AND password=@password";
-                    cmd = new MySqlCommand(query, this.connection);
-                    cmd.Parameters.AddWithValue("@username", username);
-                    cmd.Parameters.AddWithValue("@password", password);
-                    cmd.Parameters.AddWithValue("@email", email);
-
-                    cmd.Prepare();
-
-                    string? result = cmd.ExecuteScalar().ToString();
-                    if(result != null)
+                    if(!this.DoesUserExist(username, email, password))
                     {
-                        int user_id = int.Parse(result);
-                        return user_id;
+                        string query = "INSERT INTO users (username, password, email) VALUES ( @username, @password, @email)";
+                        MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                        cmd.Parameters.AddWithValue("@username", username);
+                        cmd.Parameters.AddWithValue("@password", password);
+                        cmd.Parameters.AddWithValue("@email", email);
+
+                        cmd.Prepare();
+
+                        cmd.ExecuteNonQuery();
+                        
+                        query = "SELECT id FROM users WHERE username=@username AND email=@email AND password=@password";
+                        cmd = new MySqlCommand(query, this.connection);
+                        cmd.Parameters.AddWithValue("@username", username);
+                        cmd.Parameters.AddWithValue("@password", password);
+                        cmd.Parameters.AddWithValue("@email", email);
+
+                        cmd.Prepare();
+
+                        string? result = cmd.ExecuteScalar().ToString();
+                        if(result != null)
+                        {
+                            int user_id = int.Parse(result);
+                            return user_id;
+                        }
                     }
 
                 }
@@ -366,6 +370,38 @@ namespace Knight.MysqlTest2.DB
                     throw new QueryFailedException("Couldn't show all users");
                 }
             }
+        }
+
+        public bool DoesUserExist(string username, string email, string password)
+        {
+            if(this.IsOpen)
+            {
+                try
+                {
+                    string query = "SELECT COUNT(*) FROM users WHERE username=@username AND email=@email AND password=@password";
+                    MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Prepare();
+                    string? result = cmd.ExecuteScalar().ToString();
+                    if(result != null)
+                    {
+                        int user_id = int.Parse(result);
+                        if(user_id == 1)
+                        {
+                            return true;
+                        }
+                    }
+                }
+                catch (MySqlException e)
+                {
+                    Logging.Log.LogError(e);
+                    throw new QueryFailedException("Couldn't find user");
+                }
+            }
+
+            return false;
         }
     }
 }
