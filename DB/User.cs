@@ -19,7 +19,7 @@ namespace Knight.MysqlTest2.DB
         
 
         /// <summary>
-        /// Creates an empty user with a default connection.
+        /// Intializes an empty <see cref="User"></see> with a default connection.
         /// </summary>
         public User()
         {
@@ -28,7 +28,7 @@ namespace Knight.MysqlTest2.DB
         }
 
         /// <summary>
-        /// Creates an empty user with a database connection.
+        /// Intializes an empty <see cref="User"></see> with a database connection.
         /// </summary>
         /// <param name="database">Database where the user is</param>
         public User(UserDatabase database)
@@ -38,7 +38,7 @@ namespace Knight.MysqlTest2.DB
         }
 
         /// <summary>
-        /// Creates a user with all information given and a database connection.
+        /// Intializes a user with all information given and a database connection.
         /// </summary>
         /// <param name="username">The user's username</param>
         /// <param name="email">The user's email</param>
@@ -59,11 +59,22 @@ namespace Knight.MysqlTest2.DB
             
         }
 
+        /// <summary>
+        /// Registers the user with the specified information
+        /// </summary>
+        /// <param name="username">Username of the user</param>
+        /// <param name="email">Email of the user</param>
+        /// <param name="password">Password of the user</param>
         public void Register(string username, string email, string password)
         {
             this.id = this.db.RegisterNewUser(username, email, password);
         }
 
+        /// <summary>
+        /// Logs in the user with the specified credentials
+        /// </summary>
+        /// <param name="username">Username or email of the user</param>
+        /// <param name="password">Password of the user</param>
         public void Login(string username, string password)
         {
             try
