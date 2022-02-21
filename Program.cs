@@ -71,8 +71,9 @@ namespace Knight.MysqlTest2
                 {
                     Log.LogSuccess("Login successful");
                 }
-                db.FillUserInformation(user2.Id, "John", "Smith");
-                db.FillUserInformation(user2.Id, gender: "male");
+                db.FillUserInformation(user2.Id, "John", "Smith"); // Creates user info
+                db.FillUserInformation(user2.Id, gender: "male"); // Modifies existing user info
+                db.FillUserInformation(user2.Id, firstname: "James"); // Overrides already existing user info
                 
             }
             catch (UserDatabaseException e)
