@@ -233,7 +233,7 @@ namespace Knight.MysqlTest2.DB
             {
                 try
                 {
-                    if(this.DoesUserExist(username, email, password))
+                    if(this.GetUserId(username, email, password) != -1)
                     {
                         throw new UserAlreadyExistsException("User already exists");
                     }
@@ -374,45 +374,6 @@ namespace Knight.MysqlTest2.DB
         }
 
         /// <summary>
-        /// Checks wether the a user with the specified credentials exists
-        /// </summary>
-        /// <param name="username">Username of the user</param>
-        /// <param name="email">Email of the user</param>
-        /// <param name="password">Password of the user</param>
-        /// <returns>Wether the user exists</returns>
-        /// <exception cref="QueryFailedException">Thrown when the user couldn't be found</exception>
-        public bool DoesUserExist(string username, string email, string password)
-        {
-            if(this.IsOpen)
-            {
-                try
-                {
-                    string query = "SELECT COUNT(*) FROM users WHERE username=@username AND email=@email AND password=@password";
-                    MySqlCommand cmd = new MySqlCommand(query, this.connection);
-                    cmd.Parameters.AddWithValue("@username", username);
-                    cmd.Parameters.AddWithValue("@email", email);
-                    cmd.Parameters.AddWithValue("@password", password);
-                    cmd.Prepare();
-                    string? result = cmd.ExecuteScalar().ToString();
-                    if(result != null)
-                    {
-                        int user_id = int.Parse(result);
-                        if(user_id == 1)
-                        {
-                            return true;
-                        }
-                    }
-                }
-                catch (MySqlException)
-                {
-                    throw new QueryFailedException("Couldn't find user");
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Gets the id of a user
         /// </summary>
         /// <param name="username">Username of the user</param>
@@ -427,19 +388,26 @@ namespace Knight.MysqlTest2.DB
             {
                 try
                 {
-                    if(this.DoesUserExist(username, email, password))
+                    string query = "SELECT id FROM users WHERE username=@username AND email=@email AND password=@password";
+                    MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                    cmd.Parameters.AddWithValue("@username", username);
+                    cmd.Parameters.AddWithValue("@email", email);
+                    cmd.Parameters.AddWithValue("@password", password);
+                    cmd.Prepare();
+
+                    string? result = null;
+                    try
                     {
-                        string query = "SELECT id FROM users WHERE username=@username AND email=@email AND password=@password";
-                        MySqlCommand cmd = new MySqlCommand(query, this.connection);
-                        cmd.Parameters.AddWithValue("@username", username);
-                        cmd.Parameters.AddWithValue("@email", email);
-                        cmd.Parameters.AddWithValue("@password", password);
-                        cmd.Prepare();
-                        string? result = cmd.ExecuteScalar().ToString();
-                        if(result != null)
-                        {
-                            user_id = int.Parse(result);
-                        }
+                        result = cmd.ExecuteScalar().ToString();
+                    }
+                    catch (NullReferenceException)
+                    {
+                        user_id = -1;
+                    }
+
+                    if(result != null)
+                    {
+                        user_id = int.Parse(result);
                     }
                 }
                 catch (MySqlException)
