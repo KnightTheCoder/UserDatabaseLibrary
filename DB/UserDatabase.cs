@@ -392,6 +392,20 @@ namespace Knight.MysqlTest2.DB
                 {
                     if(this.IsUserInformationAlreadyFilled(user_id))
                     {
+                        UserInformation userInfo = this.GetUserInformation(user_id);
+                        if(firstname == null)
+                        {
+                            firstname = userInfo.FirstName;
+                        }
+                        if(lastname == null)
+                        {
+                            lastname = userInfo.LastName;
+                        }
+                        if(gender == null)
+                        {
+                            gender = userInfo.Gender;
+                        }
+
                         string query = "UPDATE userinformation SET firstname=@firstname, lastname=@lastname, gender=@gender WHERE user_id=@user_id";
                         MySqlCommand cmd = new MySqlCommand(query, this.connection);
                         cmd.Parameters.AddWithValue("@user_id", user_id);
@@ -446,6 +460,36 @@ namespace Knight.MysqlTest2.DB
                 }
             }
             return userInfoFilled;
+        }
+
+        public UserInformation GetUserInformation(int user_id)
+        {
+            UserInformation userInfo = new UserInformation();
+            try
+            {
+                if(this.IsUserInformationAlreadyFilled(user_id))
+                {
+                    string query = "SELECT firstname, lastname, gender FROM userinformation WHERE user_id=@user_id";
+                    MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                    cmd.Parameters.AddWithValue("@user_id", user_id);
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                    while(dataReader.Read())
+                    {
+                        string? firstName = dataReader.GetValue(0)?.ToString();
+                        string? lastName = dataReader.GetValue(1)?.ToString();
+                        string? gender = dataReader.GetValue(2)?.ToString();
+                        userInfo = new UserInformation(firstName, lastName, gender);
+                    }
+                    dataReader.Close();
+                }
+            }
+            catch (MySqlException)
+            {
+                throw new QueryFailedException("Couldn't get user information");
+            }
+
+            return userInfo;
         }
 
         /// <summary>
