@@ -1,5 +1,6 @@
 using MySql.Data.MySqlClient;
 using Knight.MysqlTest2.Exceptions;
+using Knight.MysqlTest2.Utils;
 
 namespace Knight.MysqlTest2.DB
 {
@@ -25,9 +26,13 @@ namespace Knight.MysqlTest2.DB
         /// <exception cref="DatabaseConnectionFailedException">Thrown when a connection is not made</exception>
         public UserDatabase()
         {
-            string host = "localhost";
-            string username = "root";
-            string password = "DataBaseKnight2000";
+            DatabaseConectionInfo? connInfo = ConnectionUtils.GetConnectionInfo(@".\DatabaseConfig\connectionInfo.json");
+            string? host = connInfo?.Host;
+            string? username = connInfo?.User;
+            string? password = connInfo?.Password;
+            // string host = "localhost";
+            // string username = "root";
+            // string password = "DataBaseKnight2000";
 
             this.connection = new MySqlConnection();
 
@@ -51,9 +56,13 @@ namespace Knight.MysqlTest2.DB
         /// <exception cref="DatabaseConnectionFailedException">Thrown when a connection is not made</exception>
         public UserDatabase(string database)
         {
-            string host = "localhost";
-            string username = "root";
-            string password = "DataBaseKnight2000";
+            DatabaseConectionInfo? connInfo = ConnectionUtils.GetConnectionInfo(@".\DatabaseConfig\connectionInfo.json");
+            string? host = connInfo?.Host;
+            string? username = connInfo?.User;
+            string? password = connInfo?.Password;
+            // string host = "localhost";
+            // string username = "root";
+            // string password = "DataBaseKnight2000";
             this.connection = new MySqlConnection();
 
             try
@@ -77,9 +86,13 @@ namespace Knight.MysqlTest2.DB
         /// <exception cref="DatabaseConnectionFailedException">Thrown when a connection is not made</exception>
         public UserDatabase(string database, bool createIfNotExists)
         {
-            string host = "localhost";
-            string username = "root";
-            string password = "DataBaseKnight2000";
+            DatabaseConectionInfo? connInfo = ConnectionUtils.GetConnectionInfo(@".\DatabaseConfig\connectionInfo.json");
+            string? host = connInfo?.Host;
+            string? username = connInfo?.User;
+            string? password = connInfo?.Password;
+            // string host = "localhost";
+            // string username = "root";
+            // string password = "DataBaseKnight2000";
             this.connection = new MySqlConnection();
 
             try
