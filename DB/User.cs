@@ -48,22 +48,15 @@ namespace Knight.MysqlTest2.DB
         public User(string username, string email, string password, UserDatabase database)
         {
             this.db = database;
-            int result = 0;
             try
             {
                 this.Register(username, email, password);
             }
-            catch(UserAlreadyExistsException e)
+            catch(UserAlreadyExistsException)
             {
-                result = this.db.LoginUser(username, password);
-                if(result == -1)
-                {
-                    throw new LoginFailedException($"Error while creating user: {e.Message}");
-                }
-                this.loggedIn = true;
+                this.id = this.db.GetUserId(username, email, password);
             }
             
-            this.id = result;
         }
 
         public void Register(string username, string email, string password)
@@ -76,6 +69,10 @@ namespace Knight.MysqlTest2.DB
             try
             {
                 this.id = this.db.LoginUser(username, password);
+                if(this.id != -1)
+                {
+                    this.loggedIn = true;
+                }
             }
             catch (QueryFailedException e)
             {
