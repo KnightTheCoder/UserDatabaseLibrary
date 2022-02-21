@@ -339,41 +339,6 @@ namespace Knight.MysqlTest2.DB
         }
 
         /// <summary>
-        /// Lists all users
-        /// </summary>
-        public void ShowAllUsers()
-        {
-            if(this.IsOpen)
-            {
-                try
-                {
-                    string query = "SELECT * FROM users";
-                    MySqlCommand cmd = new MySqlCommand(query, this.connection);
-                    MySqlDataReader dataReader = cmd.ExecuteReader();
-
-                    Console.WriteLine("Users:");
-                    while(dataReader.Read())
-                    {
-                        if(dataReader.HasRows)
-                        {
-                            for(int i = 0; i < dataReader.FieldCount; i++)
-                            {
-                                Console.Write($"{dataReader.GetName(i)}: {dataReader.GetValue(i)} ");
-                            }
-                        }
-                        Console.WriteLine();
-                    }
-
-                    dataReader.Close();
-                }
-                catch (MySqlException)
-                {
-                    throw new QueryFailedException("Couldn't show all users");
-                }
-            }
-        }
-
-        /// <summary>
         /// Gets the id of a user
         /// </summary>
         /// <param name="username">Username of the user</param>
@@ -417,6 +382,105 @@ namespace Knight.MysqlTest2.DB
             }
 
             return user_id;
+        }
+
+        public void FillUserInformation(int user_id, string? firstname = null, string? lastname = null, string? gender = null)
+        {
+            if(this.IsOpen)
+            {
+                try
+                {
+                    if(this.IsUserInformationAlreadyFilled(user_id))
+                    {
+                        string query = "UPDATE userinformation SET firstname=@firstname, lastname=@lastname, gender=@gender WHERE user_id=@user_id";
+                        MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                        cmd.Parameters.AddWithValue("@user_id", user_id);
+                        cmd.Parameters.AddWithValue("@firstname", firstname);
+                        cmd.Parameters.AddWithValue("@lastname", lastname);
+                        cmd.Parameters.AddWithValue("@gender", gender);
+                        cmd.Prepare();
+                        cmd.ExecuteNonQuery();
+                    }
+                    else
+                    {
+                        string query = "INSERT INTO userinformation(user_id, firstname, lastname, gender) VALUES (@user_id, @firstname, @lastname, @gender)";
+                        MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                        cmd.Parameters.AddWithValue("@user_id", user_id);
+                        cmd.Parameters.AddWithValue("@firstname", firstname);
+                        cmd.Parameters.AddWithValue("@lastname", lastname);
+                        cmd.Parameters.AddWithValue("@gender", gender);
+                        cmd.Prepare();
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (MySqlException)
+                {
+                    throw new QueryFailedException("Couldn't fill user information");
+                }
+            }
+        }
+
+        public bool IsUserInformationAlreadyFilled(int user_id)
+        {
+            bool userInfoFilled = false;
+            if(this.IsOpen)
+            {
+                try
+                {
+                    string query = "SELECT COUNT(*) FROM userinformation WHERE user_id=@user_id";
+                    MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                    cmd.Parameters.AddWithValue("@user_id", user_id);
+                    cmd.Prepare();
+                    string? result = cmd.ExecuteScalar().ToString();
+                    if(result != null)
+                    {
+                        if(int.Parse(result) == 1)
+                        {
+                            userInfoFilled = true;
+                        }
+                    }
+                }
+                catch (MySqlException)
+                {
+                    throw new QueryFailedException("Couldn't find user information");
+                }
+            }
+            return userInfoFilled;
+        }
+
+        /// <summary>
+        /// Lists all users
+        /// </summary>
+        public void ShowAllUsers()
+        {
+            if(this.IsOpen)
+            {
+                try
+                {
+                    string query = "SELECT * FROM users";
+                    MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                    MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                    Console.WriteLine("Users:");
+                    while(dataReader.Read())
+                    {
+                        if(dataReader.HasRows)
+                        {
+                            for(int i = 0; i < dataReader.FieldCount; i++)
+                            {
+                                Console.Write($"{dataReader.GetName(i)}: {dataReader.GetValue(i)} ");
+                            }
+                        }
+                        Console.WriteLine();
+                    }
+
+                    dataReader.Close();
+                }
+                catch (MySqlException)
+                {
+                    throw new QueryFailedException("Couldn't show all users");
+                }
+            }
         }
     }
 }
