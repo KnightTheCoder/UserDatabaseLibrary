@@ -44,7 +44,6 @@ namespace Knight.MysqlTest2.DB
         /// <param name="email">The user's email</param>
         /// <param name="password">The user's password</param>
         /// <param name="database">Database where the user is</param>
-        /// <exception cref="LoginFailedException">Thrown if the user already exists</exception>
         public User(string username, string email, string password, UserDatabase database)
         {
             this.db = database;
