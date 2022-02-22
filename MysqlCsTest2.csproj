@@ -11,4 +11,10 @@
     <PackageReference Include="Mysql.Data" Version="8.0.28" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="DatabaseConfig\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>  
+  </ItemGroup>
+
 </Project>
