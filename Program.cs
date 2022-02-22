@@ -74,6 +74,7 @@ namespace Knight.MysqlTest2
                 db.FillUserInformation(user2.Id, "John", "Smith"); // Creates user info
                 db.FillUserInformation(user2.Id, gender: "male"); // Modifies existing user info
                 db.FillUserInformation(user2.Id, firstname: "James"); // Overrides already existing user info
+                db.FillUserInformation(user4.Id, "Mikey", "Mouse", "male"); // Fill info for a user that is inactive
                 
             }
             catch (UserDatabaseException e)
@@ -85,6 +86,9 @@ namespace Knight.MysqlTest2
             Console.WriteLine($"UserId: {user2.Id} LoggedIn: {user2.LoggedIN}");
             Console.WriteLine($"UserId: {user3.Id} LoggedIn: {user3.LoggedIN}");
             Console.WriteLine($"UserId: {user4.Id} LoggedIn: {user4.LoggedIN}");
+
+            Console.WriteLine($"UserId: {user2.Id} active: {db.IsUserActive(user2.Id)}"); // Checks wether the second user is active
+            Console.WriteLine($"UserId: {user4.Id} active: {db.IsUserActive(user4.Id)}");
 
             db.ShowAllUsers();
 
