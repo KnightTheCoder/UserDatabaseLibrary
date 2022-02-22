@@ -17,7 +17,6 @@ namespace Knight.MysqlTest2.DB
         /// <summary>
         /// Checks wether the mysql connection is open
         /// </summary>
-        /// <returns>Open state</returns>
         public bool IsOpen {get => connection.State.ToString() == "Open";}
 
         /// <summary>
@@ -28,11 +27,8 @@ namespace Knight.MysqlTest2.DB
         {
             DatabaseConectionInfo? connInfo = ConnectionUtils.GetConnectionInfo(@".\DatabaseConfig\connectionInfo.json");
             string? host = connInfo?.Host;
-            string? username = connInfo?.User;
+            string? username = connInfo?.Username;
             string? password = connInfo?.Password;
-            // string host = "localhost";
-            // string username = "root";
-            // string password = "DataBaseKnight2000";
 
             this.connection = new MySqlConnection();
 
@@ -58,11 +54,8 @@ namespace Knight.MysqlTest2.DB
         {
             DatabaseConectionInfo? connInfo = ConnectionUtils.GetConnectionInfo(@".\DatabaseConfig\connectionInfo.json");
             string? host = connInfo?.Host;
-            string? username = connInfo?.User;
+            string? username = connInfo?.Username;
             string? password = connInfo?.Password;
-            // string host = "localhost";
-            // string username = "root";
-            // string password = "DataBaseKnight2000";
             this.connection = new MySqlConnection();
 
             try
@@ -88,11 +81,8 @@ namespace Knight.MysqlTest2.DB
         {
             DatabaseConectionInfo? connInfo = ConnectionUtils.GetConnectionInfo(@".\DatabaseConfig\connectionInfo.json");
             string? host = connInfo?.Host;
-            string? username = connInfo?.User;
+            string? username = connInfo?.Username;
             string? password = connInfo?.Password;
-            // string host = "localhost";
-            // string username = "root";
-            // string password = "DataBaseKnight2000";
             this.connection = new MySqlConnection();
 
             try
@@ -207,6 +197,7 @@ namespace Knight.MysqlTest2.DB
                         "password VARCHAR(30) NOT NULL," +
                         "email VARCHAR(255) NOT NULL UNIQUE," +
                         "loggedin BOOLEAN DEFAULT FALSE," +
+                        "active BOOLEAN DEFAULT TRUE," +
                         "PRIMARY KEY(id)" +
                         ");";
                     MySqlCommand cmd = new MySqlCommand(query, connection);
@@ -397,6 +388,46 @@ namespace Knight.MysqlTest2.DB
             return user_id;
         }
 
+
+        /// <summary>
+        /// Gets wether a user is active
+        /// </summary>
+        /// <param name="user_id">Id of the user</param>
+        /// <returns>Wether the user is active</returns>
+        public bool IsUserActive(int user_id)
+        {
+            bool isActive = false;
+            if(this.IsOpen)
+            {
+                try
+                {
+                    string query = "SELECT active FROM users WHERE id=@user_id";
+                    MySqlCommand cmd = new MySqlCommand(query, this.connection);
+                    cmd.Parameters.AddWithValue("@user_id", user_id);
+                    cmd.Prepare();
+
+                    string? result = null;
+                    try
+                    {
+                        result = cmd.ExecuteScalar().ToString();
+                    }
+                    catch (NullReferenceException)
+                    {
+                        isActive = false;
+                    }
+                    if(result != null)
+                    {
+                        isActive = bool.Parse(result);
+                    }
+                }
+                catch (MySqlException)
+                {
+                    throw new QueryFailedException("Couldn't get user's active state");
+                }
+            }
+            return isActive;
+        }
+
         /// <summary>
         /// Fills out user information with the specified values
         /// </summary>
@@ -464,7 +495,7 @@ namespace Knight.MysqlTest2.DB
         public bool IsUserInformationAlreadyFilled(int user_id)
         {
             bool userInfoFilled = false;
-            if(this.IsOpen)
+            if(this.IsOpen && this.IsUserActive(user_id))
             {
                 try
                 {
