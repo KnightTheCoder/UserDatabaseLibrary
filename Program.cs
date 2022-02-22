@@ -94,6 +94,11 @@ namespace Knight.MysqlTest2
         {
             // DataBaseTest1();
             UserTest1();
+
+
+            Console.Write("Press any key to exit");
+            Console.ReadKey();
+            Console.WriteLine();
         }
     }
 }
