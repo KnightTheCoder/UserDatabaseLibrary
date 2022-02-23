@@ -12,7 +12,7 @@ namespace Knight.MysqlTest2.Logging
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine("An error has occured!");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -23,7 +23,7 @@ namespace Knight.MysqlTest2.Logging
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(message);
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Knight.MysqlTest2.Logging
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(exception.Message);
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace Knight.MysqlTest2.Logging
         {
             Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine($"{message}: {exception.Message}");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ResetColor();
         }
 
 
@@ -58,7 +58,7 @@ namespace Knight.MysqlTest2.Logging
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("Operation succeeded");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ResetColor();
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace Knight.MysqlTest2.Logging
         {
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine($"{message}");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.ResetColor();
         }
     }
 }
