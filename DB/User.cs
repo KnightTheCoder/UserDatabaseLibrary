@@ -1,6 +1,6 @@
-using Knight.MysqlTest2.Exceptions;
+using Knight.UserDatabase.Exceptions;
 
-namespace Knight.MysqlTest2.DB
+namespace Knight.UserDatabase.DB
 {
     /// <summary>
     /// Represents a user on a user database

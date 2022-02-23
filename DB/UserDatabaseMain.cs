@@ -1,8 +1,8 @@
 using MySql.Data.MySqlClient;
-using Knight.MysqlTest2.Exceptions;
-using Knight.MysqlTest2.Utils;
+using Knight.UserDatabase.Exceptions;
+using Knight.UserDatabase.Utils;
 
-namespace Knight.MysqlTest2.DB
+namespace Knight.UserDatabase.DB
 {
     /// <summary>
     /// A mysql database object

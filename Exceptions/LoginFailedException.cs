@@ -1,4 +1,4 @@
-namespace Knight.MysqlTest2.Exceptions
+namespace Knight.UserDatabase.Exceptions
 {
     /// <summary>
     /// Occurs when a login attempt fails

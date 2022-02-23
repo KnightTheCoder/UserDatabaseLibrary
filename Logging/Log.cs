@@ -1,4 +1,4 @@
-namespace Knight.MysqlTest2.Logging
+namespace Knight.UserDatabase.Logging
 {
     /// <summary>
     /// Represents a logging object

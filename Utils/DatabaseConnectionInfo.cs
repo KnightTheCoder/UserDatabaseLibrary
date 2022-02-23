@@ -1,6 +1,6 @@
 using System.Text.Json.Serialization;
 
-namespace Knight.MysqlTest2.Utils
+namespace Knight.UserDatabase.Utils
 {
     /// <summary>
     /// Represents connection information for the database

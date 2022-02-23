@@ -1,8 +1,8 @@
-﻿using Knight.MysqlTest2.DB;
-using Knight.MysqlTest2.Exceptions;
-using Knight.MysqlTest2.Logging;
+﻿using Knight.UserDatabase.DB;
+using Knight.UserDatabase.Exceptions;
+using Knight.UserDatabase.Logging;
 
-namespace Knight.MysqlTest2
+namespace Knight.UserDatabase
 {
     class Program
     {
@@ -11,7 +11,7 @@ namespace Knight.MysqlTest2
         {
             // UserDatabase db = new UserDatabase();
             // UserDatabase db = new UserDatabase("cs_dbtest");
-            UserDatabase db = new UserDatabase("cs_dbtest", true);
+            DB.UserDatabase db = new DB.UserDatabase("cs_dbtest", true);
 
             // db.CreateDataBase("cs_dbtest");
             // db.CreateDataBase("cs_dbtest"); // Error
@@ -49,7 +49,7 @@ namespace Knight.MysqlTest2
 
         private static void UserTest1()
         {
-            UserDatabase db = new UserDatabase("userTest", true);
+            DB.UserDatabase db = new DB.UserDatabase("userTest", true);
             // UserDatabase db = new UserDatabase();
             // UserDatabase db = new UserDatabase("userTest");
             // db.CreateDataBase("userTest");
@@ -97,7 +97,7 @@ namespace Knight.MysqlTest2
 
         private static void UserInterfaceDemo()
         {
-            UserDatabase db = new UserDatabase("uidemo", true);
+            DB.UserDatabase db = new DB.UserDatabase("uidemo", true);
 
             try
             {

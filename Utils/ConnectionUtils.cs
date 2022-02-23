@@ -1,7 +1,7 @@
 using System.Text.Json;
-using Knight.MysqlTest2.Exceptions;
+using Knight.UserDatabase.Exceptions;
 
-namespace Knight.MysqlTest2.Utils
+namespace Knight.UserDatabase.Utils
 {
     /// <summary>
     /// A static class containing connection utilities

@@ -1,4 +1,4 @@
-namespace Knight.MysqlTest2.DB
+namespace Knight.UserDatabase.DB
 {
     /// <summary>
     /// Represents the user's information

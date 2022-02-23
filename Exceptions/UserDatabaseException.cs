@@ -1,4 +1,4 @@
-namespace Knight.MysqlTest2.Exceptions
+namespace Knight.UserDatabase.Exceptions
 {
     /// <summary>
     /// Base class for all user database exceptions
