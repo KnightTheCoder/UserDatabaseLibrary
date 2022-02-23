@@ -107,6 +107,7 @@ namespace Knight.UserDatabase.Database
         ~UserDatabase()
         {
             this.connection.Close();
+            this.connection.Dispose();
         }
 
         /// <summary>

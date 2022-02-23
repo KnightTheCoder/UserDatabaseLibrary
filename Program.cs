@@ -173,6 +173,7 @@ namespace Knight.UserDatabase
                 db.FillUserInformation(user.Id, firstname, lastname, gender, age);
                 // db.FillUserInformation(user.Id);
 
+                Console.WriteLine("================User information================");
                 UserInformation userInfo = db.GetUserInformation(user.Id);
                 Console.WriteLine($"Firstname: {userInfo.FirstName}");
                 Console.WriteLine($"Lastname: {userInfo.LastName}");
