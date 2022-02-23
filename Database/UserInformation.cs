@@ -1,4 +1,4 @@
-namespace Knight.UserDatabase.DB
+namespace Knight.UserDatabase.Database
 {
     /// <summary>
     /// Represents the user's information

@@ -1,7 +1,7 @@
 using MySql.Data.MySqlClient;
 using Knight.UserDatabase.Exceptions;
 
-namespace Knight.UserDatabase.DB
+namespace Knight.UserDatabase.Database
 {
     public partial class UserDatabase
     {

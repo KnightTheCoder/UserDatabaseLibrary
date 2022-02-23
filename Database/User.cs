@@ -1,6 +1,6 @@
 using Knight.UserDatabase.Exceptions;
 
-namespace Knight.UserDatabase.DB
+namespace Knight.UserDatabase.Database
 {
     /// <summary>
     /// Represents a user on a user database

@@ -2,7 +2,7 @@ using MySql.Data.MySqlClient;
 using Knight.UserDatabase.Exceptions;
 using Knight.UserDatabase.Utils;
 
-namespace Knight.UserDatabase.DB
+namespace Knight.UserDatabase.Database
 {
     /// <summary>
     /// A mysql database object

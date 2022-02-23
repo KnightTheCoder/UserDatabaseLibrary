@@ -1,4 +1,4 @@
-﻿using Knight.UserDatabase.DB;
+﻿using Knight.UserDatabase.Database;
 using Knight.UserDatabase.Exceptions;
 using Knight.UserDatabase.Logging;
 
@@ -11,7 +11,7 @@ namespace Knight.UserDatabase
         {
             // UserDatabase db = new UserDatabase();
             // UserDatabase db = new UserDatabase("cs_dbtest");
-            DB.UserDatabase db = new DB.UserDatabase("cs_dbtest", true);
+            Database.UserDatabase db = new Database.UserDatabase("cs_dbtest", true);
 
             // db.CreateDataBase("cs_dbtest");
             // db.CreateDataBase("cs_dbtest"); // Error
@@ -49,7 +49,7 @@ namespace Knight.UserDatabase
 
         private static void UserTest1()
         {
-            DB.UserDatabase db = new DB.UserDatabase("userTest", true);
+            Database.UserDatabase db = new Database.UserDatabase("userTest", true);
             // UserDatabase db = new UserDatabase();
             // UserDatabase db = new UserDatabase("userTest");
             // db.CreateDataBase("userTest");
@@ -97,7 +97,7 @@ namespace Knight.UserDatabase
 
         private static void UserInterfaceDemo()
         {
-            DB.UserDatabase db = new DB.UserDatabase("uidemo", true);
+            Database.UserDatabase db = new Database.UserDatabase("uidemo", true);
 
             try
             {
