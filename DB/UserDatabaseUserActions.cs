@@ -14,12 +14,18 @@ namespace Knight.UserDatabase.DB
         /// <returns>Registered user's id or -1 if failed</returns>
         /// <exception cref="QueryFailedException">Thrown when registering the new user failed</exception>
         /// <exception cref="UserAlreadyExistsException">Thrown when the registered user already exists</exception>
+        /// <exception cref="EmptyCredentialsException">Thrown when the username, email or password is empty</exception>
         public int RegisterNewUser(string username, string email, string password)
         {
             if(this.IsOpen)
             {
                 try
                 {
+                    if(username == string.Empty || email == string.Empty || password == string.Empty)
+                    {
+                        throw new EmptyCredentialsException("Username, email and password must not be empty");
+                    }
+
                     if(this.GetUserId(username, email, password) != -1)
                     {
                         throw new UserAlreadyExistsException("User already exists");
@@ -69,12 +75,18 @@ namespace Knight.UserDatabase.DB
         /// <param name="password">Password of the user</param>
         /// <returns>The user's id or -1 if failed</returns>
         /// <exception cref="QueryFailedException">Thrown when login has failed</exception>
+        /// <exception cref="EmptyCredentialsException">Thrown when the username or password is empty</exception>
         public int LoginUser(string username, string password)
         {
             if(this.IsOpen)
             {
                 try
                 {
+                    if(username == string.Empty || password == string.Empty)
+                    {
+                        throw new EmptyCredentialsException("Username and password must not be empty");
+                    }
+
                     int matches = 0;
                     string query = "SELECT COUNT(*) FROM users WHERE (username=@username OR email=@email) AND password=@password LIMIT 1";
                     MySqlCommand cmd = new MySqlCommand(query, this.connection);
