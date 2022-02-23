@@ -133,7 +133,7 @@ namespace Knight.MysqlTest2.DB
         /// <param name="lastname">Lastname of the user</param>
         /// <param name="gender">Gender of the user</param>
         /// <exception cref="QueryFailedException">Thrown when the user information couldn't be filled</exception>
-        public void FillUserInformation(int user_id, string? firstname = null, string? lastname = null, string? gender = null)
+        public void FillUserInformation(int user_id, string? firstname = null, string? lastname = null, string? gender = null, int age = 0)
         {
             if(this.IsOpen)
             {
@@ -167,24 +167,30 @@ namespace Knight.MysqlTest2.DB
                         {
                             gender = userInfo.Gender;
                         }
+                        if(age == 0)
+                        {
+                            age = userInfo.Age;
+                        }
 
-                        string query = "UPDATE userinformation SET firstname=@firstname, lastname=@lastname, gender=@gender WHERE user_id=@user_id";
+                        string query = "UPDATE userinformation SET firstname=@firstname, lastname=@lastname, gender=@gender, age=@age WHERE user_id=@user_id";
                         MySqlCommand cmd = new MySqlCommand(query, this.connection);
                         cmd.Parameters.AddWithValue("@user_id", user_id);
                         cmd.Parameters.AddWithValue("@firstname", firstname);
                         cmd.Parameters.AddWithValue("@lastname", lastname);
                         cmd.Parameters.AddWithValue("@gender", gender);
+                        cmd.Parameters.AddWithValue("@age", age);
                         cmd.Prepare();
                         cmd.ExecuteNonQuery();
                     }
                     else
                     {
-                        string query = "INSERT INTO userinformation(user_id, firstname, lastname, gender) VALUES (@user_id, @firstname, @lastname, @gender)";
+                        string query = "INSERT INTO userinformation(user_id, firstname, lastname, gender, age) VALUES (@user_id, @firstname, @lastname, @gender, @age)";
                         MySqlCommand cmd = new MySqlCommand(query, this.connection);
                         cmd.Parameters.AddWithValue("@user_id", user_id);
                         cmd.Parameters.AddWithValue("@firstname", firstname);
                         cmd.Parameters.AddWithValue("@lastname", lastname);
                         cmd.Parameters.AddWithValue("@gender", gender);
+                        cmd.Parameters.AddWithValue("@age", age);
                         cmd.Prepare();
                         cmd.ExecuteNonQuery();
                     }
