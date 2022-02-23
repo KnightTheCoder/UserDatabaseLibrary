@@ -442,6 +442,19 @@ namespace Knight.MysqlTest2.DB
             {
                 try
                 {
+                    if(firstname == string.Empty)
+                    {
+                        firstname = null;
+                    }
+                    if(lastname == string.Empty)
+                    {
+                        lastname = null;
+                    }
+                    if(gender == string.Empty)
+                    {
+                        gender = null;
+                    }
+
                     if(this.IsUserInformationAlreadyFilled(user_id))
                     {
                         UserInformation userInfo = this.GetUserInformation(user_id);
