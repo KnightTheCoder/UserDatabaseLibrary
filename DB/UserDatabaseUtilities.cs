@@ -52,10 +52,11 @@ namespace Knight.UserDatabase.DB
         }
 
         /// <summary>
-        /// Gets wether a user is active
+        /// Gets a user's active state
         /// </summary>
         /// <param name="user_id">Id of the user</param>
         /// <returns>Wether the user is active</returns>
+        /// <exception cref="QueryFailedException">Thrown when couldn't get the user's active state</exception>
         public bool IsUserActive(int user_id)
         {
             bool isActive = false;
@@ -129,6 +130,7 @@ namespace Knight.UserDatabase.DB
         /// </summary>
         /// <param name="user_id"></param>
         /// <returns>The user's information in a <see cref="UserInformation"></see> object</returns>
+        /// <exception cref="QueryFailedException">Thrown when unable to get a user's information</exception>
         public UserInformation GetUserInformation(int user_id)
         {
             UserInformation userInfo = new UserInformation();
