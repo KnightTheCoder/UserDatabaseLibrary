@@ -208,6 +208,7 @@ namespace Knight.MysqlTest2.DB
                         "firstname VARCHAR(60)," +
                         "lastname VARCHAR(60)," +
                         "gender VARCHAR(30)," +
+                        "age int," +
                         "PRIMARY KEY(user_id)," +
                         "FOREIGN KEY(user_id) REFERENCES users(id)" +
                         "ON DELETE CASCADE" +
