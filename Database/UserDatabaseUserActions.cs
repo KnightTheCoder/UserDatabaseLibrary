@@ -149,7 +149,7 @@ namespace Knight.UserDatabase.Database
         /// <param name="lastname">Lastname of the user</param>
         /// <param name="gender">Gender of the user</param>
         /// <exception cref="QueryFailedException">Thrown when the user information couldn't be filled</exception>
-        public void FillUserInformation(int user_id, string? firstname = null, string? lastname = null, string? gender = null, int age = 0)
+        public void FillUserInformation(int user_id, string? firstname, string? lastname, string? gender, int age)
         {
             if(this.IsOpen)
             {
