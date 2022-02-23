@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Knight.MysqlTest2.Exceptions;
 
 namespace Knight.MysqlTest2.Utils
 {
@@ -14,12 +15,19 @@ namespace Knight.MysqlTest2.Utils
         /// <returns>Connection info as a <see cref="DatabaseConectionInfo"></see> object</returns>
         public static DatabaseConectionInfo? GetConnectionInfo(string filePath)
         {
-            FileStream infoFile = File.Open(filePath, FileMode.Open);
-            DatabaseConectionInfo? connectionInfo = JsonSerializer.Deserialize<DatabaseConectionInfo>(infoFile);
+            try
+            {
+                FileStream infoFile = File.Open(filePath, FileMode.Open);
+                DatabaseConectionInfo? connectionInfo = JsonSerializer.Deserialize<DatabaseConectionInfo>(infoFile);
 
-            infoFile.Dispose();
+                infoFile.Close();
 
-            return connectionInfo;
+                return connectionInfo;
+            }
+            catch (FileNotFoundException)
+            {
+                throw new DatabaseConnectionFailedException($"Connection info file: {filePath} not found");
+            }
         }
     }
 }
