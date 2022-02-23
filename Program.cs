@@ -148,7 +148,7 @@ namespace Knight.MysqlTest2
 
                 Console.WriteLine("Please fill in information about you");
 
-                db.FillUserInformation(user.Id, "Dominik", "Kocsis", "male");
+                // db.FillUserInformation(user.Id, "Dominik", "Kocsis", "male", 21);
 
                 Console.Write("Firstname: ");
                 string? firstname = Console.ReadLine();
@@ -159,12 +159,25 @@ namespace Knight.MysqlTest2
                 Console.Write("Gender: ");
                 string? gender = Console.ReadLine();
 
-                db.FillUserInformation(user.Id, firstname, lastname, gender);
+                Console.Write("Age: ");
+                int age = 0;
+                try
+                {
+                    age = Convert.ToInt32(Console.ReadLine());
+                }
+                catch (FormatException)
+                {
+                    age = 0;
+                }
+
+                db.FillUserInformation(user.Id, firstname, lastname, gender, age);
+                // db.FillUserInformation(user.Id);
 
                 UserInformation userInfo = db.GetUserInformation(user.Id);
                 Console.WriteLine($"Firstname: {userInfo.FirstName}");
                 Console.WriteLine($"Lastname: {userInfo.LastName}");
                 Console.WriteLine($"Gender: {userInfo.Gender}");
+                Console.WriteLine($"Age: {userInfo.Age}");
                 
             }
             catch (Exception e)
