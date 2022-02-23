@@ -136,7 +136,7 @@ namespace Knight.MysqlTest2.DB
             {
                 if(this.IsUserInformationAlreadyFilled(user_id))
                 {
-                    string query = "SELECT firstname, lastname, gender FROM userinformation WHERE user_id=@user_id";
+                    string query = "SELECT firstname, lastname, gender, age FROM userinformation WHERE user_id=@user_id";
                     MySqlCommand cmd = new MySqlCommand(query, this.connection);
                     cmd.Parameters.AddWithValue("@user_id", user_id);
                     MySqlDataReader dataReader = cmd.ExecuteReader();
@@ -146,7 +146,14 @@ namespace Knight.MysqlTest2.DB
                         string? firstName = dataReader.GetValue(0)?.ToString();
                         string? lastName = dataReader.GetValue(1)?.ToString();
                         string? gender = dataReader.GetValue(2)?.ToString();
-                        userInfo = new UserInformation(firstName, lastName, gender);
+
+                        int age = 0;
+                        string? tmpAge = dataReader.GetValue(3)?.ToString();
+                        if(tmpAge != null)
+                        {
+                            age = int.Parse(tmpAge);
+                        }
+                        userInfo = new UserInformation(firstName, lastName, gender, age);
                     }
                     dataReader.Close();
                 }
