@@ -13,6 +13,7 @@ namespace Knight.MysqlTest2.DB
         /// Mysql connection object
         /// </summary>
         private MySqlConnection connection;
+        private DatabaseConectionInfo? connInfo = ConnectionUtils.GetConnectionInfo(@".\DatabaseConfig\connectionInfo.json");
 
         /// <summary>
         /// Checks wether the mysql connection is open
@@ -25,10 +26,9 @@ namespace Knight.MysqlTest2.DB
         /// <exception cref="DatabaseConnectionFailedException">Thrown when a connection is not made</exception>
         public UserDatabase()
         {
-            DatabaseConectionInfo? connInfo = ConnectionUtils.GetConnectionInfo(@".\DatabaseConfig\connectionInfo.json");
-            string? host = connInfo?.Host;
-            string? username = connInfo?.Username;
-            string? password = connInfo?.Password;
+            string? host = this.connInfo?.Host;
+            string? username = this.connInfo?.Username;
+            string? password = this.connInfo?.Password;
 
             this.connection = new MySqlConnection();
 
@@ -52,10 +52,9 @@ namespace Knight.MysqlTest2.DB
         /// <exception cref="DatabaseConnectionFailedException">Thrown when a connection is not made</exception>
         public UserDatabase(string database)
         {
-            DatabaseConectionInfo? connInfo = ConnectionUtils.GetConnectionInfo(@".\DatabaseConfig\connectionInfo.json");
-            string? host = connInfo?.Host;
-            string? username = connInfo?.Username;
-            string? password = connInfo?.Password;
+            string? host = this.connInfo?.Host;
+            string? username = this.connInfo?.Username;
+            string? password = this.connInfo?.Password;
             this.connection = new MySqlConnection();
 
             try
@@ -79,10 +78,9 @@ namespace Knight.MysqlTest2.DB
         /// <exception cref="DatabaseConnectionFailedException">Thrown when a connection is not made</exception>
         public UserDatabase(string database, bool createIfNotExists)
         {
-            DatabaseConectionInfo? connInfo = ConnectionUtils.GetConnectionInfo(@".\DatabaseConfig\connectionInfo.json");
-            string? host = connInfo?.Host;
-            string? username = connInfo?.Username;
-            string? password = connInfo?.Password;
+            string? host = this.connInfo?.Host;
+            string? username = this.connInfo?.Username;
+            string? password = this.connInfo?.Password;
             this.connection = new MySqlConnection();
 
             try
