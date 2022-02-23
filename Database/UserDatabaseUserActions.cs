@@ -14,7 +14,7 @@ namespace Knight.UserDatabase.Database
         /// <returns>Registered user's id or -1 if failed</returns>
         /// <exception cref="QueryFailedException">Thrown when registering the new user failed</exception>
         /// <exception cref="UserAlreadyExistsException">Thrown when the registered user already exists</exception>
-        /// <exception cref="EmptyCredentialsException">Thrown when the username, email or password is empty</exception>
+        /// <exception cref="IncorrectCredentialsException">Thrown when the username, email or password is empty</exception>
         public int RegisterNewUser(string username, string email, string password)
         {
             if(this.IsOpen)
@@ -23,7 +23,11 @@ namespace Knight.UserDatabase.Database
                 {
                     if(username == string.Empty || email == string.Empty || password == string.Empty)
                     {
-                        throw new EmptyCredentialsException("Username, email and password must not be empty");
+                        throw new IncorrectCredentialsException("Username, email and password must not be empty");
+                    }
+                    else if(!email.Contains('@'))
+                    {
+                        throw new IncorrectCredentialsException("Email format is incorrect");
                     }
 
                     if(this.GetUserId(username, email, password) != -1)
@@ -75,7 +79,7 @@ namespace Knight.UserDatabase.Database
         /// <param name="password">Password of the user</param>
         /// <returns>The user's id or -1 if failed</returns>
         /// <exception cref="QueryFailedException">Thrown when login has failed</exception>
-        /// <exception cref="EmptyCredentialsException">Thrown when the username or password is empty</exception>
+        /// <exception cref="IncorrectCredentialsException">Thrown when the username or password is empty</exception>
         public int LoginUser(string username, string password)
         {
             if(this.IsOpen)
@@ -84,7 +88,7 @@ namespace Knight.UserDatabase.Database
                 {
                     if(username == string.Empty || password == string.Empty)
                     {
-                        throw new EmptyCredentialsException("Username and password must not be empty");
+                        throw new IncorrectCredentialsException("Username and password must not be empty");
                     }
 
                     int matches = 0;
