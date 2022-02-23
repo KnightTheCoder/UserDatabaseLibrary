@@ -8,7 +8,7 @@ namespace Knight.MysqlTest2.DB
     public class User
     {
         private int id;
-        private UserDatabase db;
+        private UserDatabase databse;
         private bool loggedIn;
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Knight.MysqlTest2.DB
         public User()
         {
             this.id = -1;
-            this.db = new UserDatabase();
+            this.databse = new UserDatabase();
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace Knight.MysqlTest2.DB
         public User(UserDatabase database)
         {
             this.id = -1;
-            this.db = database;
+            this.databse = database;
         }
 
         /// <summary>
@@ -46,14 +46,14 @@ namespace Knight.MysqlTest2.DB
         /// <param name="database">Database where the user is</param>
         public User(string username, string email, string password, UserDatabase database)
         {
-            this.db = database;
+            this.databse = database;
             try
             {
                 this.Register(username, email, password);
             }
             catch(UserAlreadyExistsException)
             {
-                this.id = this.db.GetUserId(username, email, password);
+                this.id = this.databse.GetUserId(username, email, password);
             }
             
         }
@@ -64,11 +64,12 @@ namespace Knight.MysqlTest2.DB
         /// <param name="username">Username of the user</param>
         /// <param name="email">Email of the user</param>
         /// <param name="password">Password of the user</param>
+        /// <exception cref="RegistrationFailedException">Thrown when registration has failed</exception>
         public void Register(string username, string email, string password)
         {
             try
             {
-                this.id = this.db.RegisterNewUser(username, email, password);
+                this.id = this.databse.RegisterNewUser(username, email, password);
             }
             catch (QueryFailedException e)
             {
@@ -81,11 +82,12 @@ namespace Knight.MysqlTest2.DB
         /// </summary>
         /// <param name="username">Username or email of the user</param>
         /// <param name="password">Password of the user</param>
+        /// <exception cref="LoginFailedException">Thrown when login has failed</exception>
         public void Login(string username, string password)
         {
             try
             {
-                this.id = this.db.LoginUser(username, password);
+                this.id = this.databse.LoginUser(username, password);
                 if(this.id != -1)
                 {
                     this.loggedIn = true;
