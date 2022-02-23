@@ -66,7 +66,14 @@ namespace Knight.MysqlTest2.DB
         /// <param name="password">Password of the user</param>
         public void Register(string username, string email, string password)
         {
-            this.id = this.db.RegisterNewUser(username, email, password);
+            try
+            {
+                this.id = this.db.RegisterNewUser(username, email, password);
+            }
+            catch (QueryFailedException e)
+            {
+                throw new RegistrationFailedException($"Error while registering user: {e.Message}");
+            }
         }
 
         /// <summary>
