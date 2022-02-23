@@ -94,12 +94,72 @@ namespace Knight.MysqlTest2
 
             db.DeleteDataBase("userTest");
         }
-        public static void Main(string[] args)
+
+        private static void UserInterfaceDemo()
+        {
+            UserDatabase db = new UserDatabase("uidemo", true);
+
+            db.CreateTables();
+
+            try
+            {
+                User testUser = new User("knight", "knight@mail.com", "123", db);
+
+                Console.WriteLine("Please register an account!");
+
+                Console.Write("Username: ");
+                string? username = Console.ReadLine();
+
+                Console.Write("Email: ");
+                string? email = Console.ReadLine();
+
+                Console.Write("Password: ");
+                string? password = Console.ReadLine();
+
+                User user = new User(db);
+                if(username != null && email != null && password != null)
+                {
+                    user.Register(username, email, password);
+                }
+
+                Console.WriteLine("Please log in!");
+
+                Console.Write("Username or email: ");
+                username = Console.ReadLine();
+
+                Console.Write("Password: ");
+                password = Console.ReadLine();
+
+                if(username != null && password != null)
+                {
+                    user.Login(username, password);
+                }
+
+                if(user.LoggedIN)
+                {
+                    Log.LogSuccess("Successful login!");
+                }
+                else
+                {
+                    Log.LogError("Login failed!");
+                }
+            }
+            catch (UserDatabaseException e)
+            {
+                Log.LogError(e);
+            }
+
+
+            db.DeleteDataBase("uidemo");
+        }
+
+        static void Main(string[] args)
         {
             System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
 
             // DataBaseTest1();
-            UserTest1();
+            // UserTest1();
+            UserInterfaceDemo();
 
 
             watch.Stop();
