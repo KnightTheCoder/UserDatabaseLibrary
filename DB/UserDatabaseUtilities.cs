@@ -1,6 +1,5 @@
 using MySql.Data.MySqlClient;
 using Knight.MysqlTest2.Exceptions;
-using Knight.MysqlTest2.Utils;
 
 namespace Knight.MysqlTest2.DB
 {
