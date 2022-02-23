@@ -99,10 +99,10 @@ namespace Knight.MysqlTest2
         {
             UserDatabase db = new UserDatabase("uidemo", true);
 
-            db.CreateTables();
-
             try
             {
+                db.CreateTables();
+
                 User testUser = new User("knight", "knight@mail.com", "123", db);
 
                 Console.WriteLine("Please register an account!");
@@ -121,6 +121,8 @@ namespace Knight.MysqlTest2
                 {
                     user.Register(username, email, password);
                 }
+
+                db.ShowAllUsers();
 
                 Console.WriteLine("Please log in!");
 
@@ -143,12 +145,32 @@ namespace Knight.MysqlTest2
                 {
                     Log.LogError("Login failed!");
                 }
+
+                Console.WriteLine("Please fill in information about you");
+
+                db.FillUserInformation(user.Id, "Dominik", "Kocsis", "male");
+
+                Console.Write("Firstname: ");
+                string? firstname = Console.ReadLine();
+
+                Console.Write("Lastname: ");
+                string? lastname = Console.ReadLine();
+
+                Console.Write("Gender: ");
+                string? gender = Console.ReadLine();
+
+                db.FillUserInformation(user.Id, firstname, lastname, gender);
+
+                UserInformation userInfo = db.GetUserInformation(user.Id);
+                Console.WriteLine($"Firstname: {userInfo.FirstName}");
+                Console.WriteLine($"Lastname: {userInfo.LastName}");
+                Console.WriteLine($"Gender: {userInfo.Gender}");
+                
             }
-            catch (UserDatabaseException e)
+            catch (Exception e)
             {
                 Log.LogError(e);
             }
-
 
             db.DeleteDataBase("uidemo");
         }
