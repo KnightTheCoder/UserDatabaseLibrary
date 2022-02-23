@@ -96,10 +96,18 @@ namespace Knight.MysqlTest2
         }
         public static void Main(string[] args)
         {
+            System.Diagnostics.Stopwatch watch = System.Diagnostics.Stopwatch.StartNew();
+
             // DataBaseTest1();
             UserTest1();
 
 
+            watch.Stop();
+
+            Console.ForegroundColor = ConsoleColor.Blue;
+            Console.WriteLine($"Program finished execution in {watch.ElapsedMilliseconds}ms");
+            Console.ResetColor();
+            
             Console.Write("Press any key to exit");
             Console.ReadKey();
             Console.WriteLine();
