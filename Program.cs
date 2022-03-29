@@ -71,10 +71,10 @@ namespace Knight.UserDatabase
                 {
                     Log.LogSuccess("Login successful");
                 }
-                db.FillUserInformation(user2.Id, "John", "Smith"); // Creates user info
-                db.FillUserInformation(user2.Id, gender: "male"); // Modifies existing user info
-                db.FillUserInformation(user2.Id, firstname: "James"); // Overrides already existing user info
-                db.FillUserInformation(user4.Id, "Mikey", "Mouse", "male"); // Fill info for a user that is inactive
+                db.FillUserInformation(user2.Id, "John", "Smith", null, 0); // Creates user info
+                db.FillUserInformation(user2.Id, null, null, "male", 0); // Modifies existing user info
+                db.FillUserInformation(user2.Id, "James", null, null, 0); // Overrides already existing user info
+                db.FillUserInformation(user4.Id, "Mikey", "Mouse", "male", 0); // Fill info for a user that is inactive
                 
             }
             catch (UserDatabaseException e)
